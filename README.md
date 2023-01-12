@@ -12,7 +12,7 @@ A micro-python script is written here which can read the data from the BME680 se
 </br><img src="https://github.com/shuvabratadey/Micro-Python-Projects/blob/main/pics/sensorsapp.jpg" width="1000"/>
 # [Please see the codes for better understanding.](https://github.com/shuvabratadey/Micro-Python-Projects/blob/main/sensorsapp.py)
 
-#------------------------------------------------------------------------------------------
+# Second IoT Based Project
 
 # IoT-Room-Light
 In this IoT project, a room light and fan can be controled by the Internet from anywhere in the world. Just open the link below then you see a Light Bulb and a Fan, By clicking the bulb and Fan Switch you can change the state of your room light and Fan.
