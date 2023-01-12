@@ -1,4 +1,4 @@
-# IoT-Based-Sensors
+# IoT-Based-Sensors Project
 In this IoT project, We have used an ESP32 microcontroller and a BME680 Sensor, and micro-python programming, Using the help of the ESP32's WiFi we can Send data to a Server, And we can access the data through a website anywhere in the world. The website Link is given below.
 
 A micro-python script is written here which can read the data from the BME680 sensor and send the data to the IoT Cloud using the WiFi of the ESP32 microcontroller. After Uploading the micro-python code to the ESP32 microcontroller, It will connect to the given WiFi Access point and after that, it will send the data to the IoT cloud.
