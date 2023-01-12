@@ -1,0 +1,152 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style type="text/css">
+body
+{	
+background-image:url(pictures/weather.jpg);
+background-position:center;
+background-repeat:no-repeat;
+background-size:cover;
+width:90%;
+}
+.view_port
+{
+	font-size:45px;
+}
+.view_img
+{
+	width:32;
+}
+@media only screen and (max-width:600px)
+{
+	.view_port
+	{
+		font-size:35px;
+	}
+	.view_img
+	{
+		width:23;
+	}
+}
+#loader { 
+border: 12px solid #f3f3f3; 
+border-radius: 50%; 
+border-top: 12px solid #444444; 
+width: 70px; 
+height: 70px; 
+animation: spin 1s linear infinite; 
+} 
+          
+@keyframes spin { 
+	100% { 
+		transform: rotate(360deg); 
+	} 
+} 
+          
+.center { 
+	position: absolute; 
+	top: 0; 
+	bottom: 0; 
+	left: 0; 
+	right: 0; 
+	margin: auto; 
+}
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: lime;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  padding: 8px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  box-shadow: 0 9px #999;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+</head>
+<body>
+<div id="loader" class="center"></div>
+<script> 
+document.onreadystatechange = function() { 
+	if (document.readyState !== "complete") { 
+		document.querySelector("body").style.visibility = "hidden"; 
+		document.querySelector("#loader").style.visibility = "visible"; 
+	} else { 
+		document.querySelector("#loader").style.display = "none"; 
+		document.querySelector("body").style.visibility = "visible";
+		setInterval(autoUpdate, 1000);
+	}
+};
+
+function autoUpdate()
+{
+	var xmlhttp = new XMLHttpRequest(); 
+   
+	xmlhttp.onreadystatechange = function() { 
+    if (this.readyState == 4 && this.status == 200) { 
+        myObj = JSON.parse(this.responseText); 
+        document.getElementById("temp").innerHTML = myObj.temp; 
+        document.getElementById("hum").innerHTML = myObj.hum; 
+        document.getElementById("pre").innerHTML = myObj.pre; 
+        document.getElementById("status_text").innerHTML = myObj.status_text;
+		document.getElementById("status_text").color = myObj.status_colour;
+		document.getElementById("bg_img").src = myObj.status_img;
+    } 
+}; 
+xmlhttp.open("GET", "featch_data.php", true); 
+xmlhttp.send();
+}
+ 
+</script> 
+<center>
+</br></br></br></br>
+	
+<h1 class="view_port">&nbsp&nbsp&nbsp&nbsp&nbsp<font id = "status_text"></font>
+<img class="view_img" id = "bg_img"/></h1>
+	
+	
+<table>
+<tr><h1><th><font size='6px' color=cc0000>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTemp:-</font></th><th>
+<font size='6px' color=#80dfff><p id = "temp"></p></font></th><th><img src="pictures/temp.jpeg" alt="Nature image" width="50"/></th></h1></tr>
+  
+<tr><h1><th><font size='6px' color=rgb(85,193,129)>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspHum:-</font></th><th>
+<font size='6px' color=#80dfff><p id = "hum"></p></font></th><th><img src="pictures/hum.jpeg" alt="Nature image\" width="50"/></th></h1></tr>
+  
+<tr><h1><th><font size='6px' color='blue'>&nbsp&nbsp&nbsp&nbsp&nbspPre:-</font></th><th>
+<font size='6px' color=#80dfff><p id = "pre"></p></font></th><th><img src="pictures/pre.png" alt="Nature image" width="50"/></th></h1></tr>
+</table>
+</br>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="showdata.php" target="_blank"><button class="button"><span>Show All Data</span></button></a>
+</br></br></br></br></br></br></br></br></br></br></br></br>
+<center><h1><font size='6px' color=#000066>&nbsp&nbsp&nbsp&nbspDesigned by Shuvabrata Dey</font></h1></center>
+</center></body></html>

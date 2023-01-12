@@ -1,0 +1,162 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+#loader { 
+border: 12px solid #f3f3f3; 
+border-radius: 50%; 
+border-top: 12px solid #444444; 
+width: 70px; 
+height: 70px; 
+animation: spin 1s linear infinite; 
+} 
+          
+@keyframes spin { 
+	100% { 
+		transform: rotate(360deg); 
+	} 
+}
+          
+.center { 
+	position: absolute; 
+	top: 0; 
+	bottom: 0; 
+	left: 0; 
+	right: 0; 
+	margin: auto; 
+}
+
+.voice {
+border-radius: 4px;
+background-color: #008CBA;
+padding: 12px 28px;
+
+border: none;
+color: white;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+margin: 4px 2px;
+}
+</style>
+</head>
+<body bgcolor = 'black'>
+<div id="loader" class="center"></div>
+<script>
+	var xmlhttp = new XMLHttpRequest(); 
+   
+	document.onreadystatechange = function() { 
+	if (document.readyState !== "complete") { 
+		document.querySelector("body").style.visibility = "hidden"; 
+		document.querySelector("#loader").style.visibility = "visible"; 
+	} else { 
+		document.querySelector("#loader").style.display = "none"; 
+		document.querySelector("body").style.visibility = "visible";
+		setInterval(autoUpdate, 1000);
+	}
+};
+	var Light = false;
+	function changeLightImage() {
+	var data_send = "featch_data.php?Update=All&Light="+Light+"&Fan="+Fan;
+	xmlhttp.open("GET", data_send, true);
+	xmlhttp.send();
+	if (!Light){
+        document.getElementById("Light").src = "pic/Light_OFF.ico";
+		document.getElementById("Light_Switch").src = "pic/Switch_OFF.jpg";
+    } else {
+        document.getElementById("Light").src = "pic/Light_ON.ico";
+		document.getElementById("Light_Switch").src = "pic/Switch_ON.jpg";
+    }
+};
+	var Fan = false;
+	function changeFanImage() {
+	var data_send = "featch_data.php?Update=All&Light="+Light+"&Fan="+Fan;
+	xmlhttp.open("GET", data_send, true); 
+	xmlhttp.send();
+	if (!Fan){
+        document.getElementById("Fan").src = "pic/Fan_OFF.jpg";
+		document.getElementById("Fan_Switch").src = "pic/Switch_OFF.jpg";
+    } else {
+        document.getElementById("Fan").src = "pic/Fan_ON.gif";
+		document.getElementById("Fan_Switch").src = "pic/Switch_ON.jpg";
+    }
+};
+function autoUpdate()
+{
+	xmlhttp.onreadystatechange = function() { 
+    if (this.readyState == 4 && this.status == 200) { 
+        myObj = JSON.parse(this.responseText);
+		if(myObj.Light != Light.toString())
+        (myObj.Light == 'true') ? (Light = true, changeLightImage()) : (Light = false, changeLightImage());
+        if(myObj.Fan != Fan.toString())
+		(myObj.Fan == 'true') ? (Fan = true, changeFanImage()) : (Fan = false, changeFanImage());
+    } 
+}; 
+xmlhttp.open("GET", "featch_data.php?Update=0", true); 
+xmlhttp.send();
+};
+function voice_control()
+	{
+    var speech = true;
+    window.SpeechRecognition = window.webkitSpeechRecognition;
+
+    const recognition = new SpeechRecognition();
+    recognition.interimResults = true;
+
+    recognition.addEventListener('result', e => {
+        const transcript = Array.from(e.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('')
+
+        if((transcript.toLowerCase() == "light on") || (transcript.toLowerCase() == "light turn on") || (transcript.toLowerCase() == "turn light on") || (transcript.toLowerCase() == "turn on the light"))
+		{
+			var data_send = "featch_data.php?Update=Light&Light=true";
+			xmlhttp.open("GET", data_send, true);
+			xmlhttp.send();
+		}
+        if((transcript.toLowerCase() == "light off") || (transcript.toLowerCase() == "light of") || (transcript.toLowerCase() == "light turn off") || (transcript.toLowerCase() == "turn light off") || (transcript.toLowerCase() == "turn off light") || (transcript.toLowerCase() == "turn off the light"))
+		{
+			var data_send = "featch_data.php?Update=Light&Light=false";
+			xmlhttp.open("GET", data_send, true);
+			xmlhttp.send();
+		}
+        if((transcript.toLowerCase() == "fan on") || (transcript.toLowerCase() == "fan turn on") || (transcript.toLowerCase() == "turn fan on") || (transcript.toLowerCase() == "turn on the fan"))
+		{
+			var data_send = "featch_data.php?Update=Fan&Fan=true";
+			xmlhttp.open("GET", data_send, true);
+			xmlhttp.send();
+		}
+        if((transcript.toLowerCase() == "fan off") || (transcript.toLowerCase() == "fan of") || (transcript.toLowerCase() == "fan turn off") || (transcript.toLowerCase() == "turn fan off") || (transcript.toLowerCase() == "turn off fan") || (transcript.toLowerCase() == "turn off the fan"))
+		{
+			var data_send = "featch_data.php?Update=Fan&Fan=false";
+			xmlhttp.open("GET", data_send, true);
+			xmlhttp.send();
+		}
+        console.log(transcript);
+    });
+    
+    if (speech == true) {
+        recognition.start();
+    }
+}
+</script>
+</br></br>
+<center><h1><font size='6px' color='white'>IoT Application</font></h1></center>
+</br></br>
+<center><img id='Light' style = 'width:150px' src='pic/Light_OFF.ico'\>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+<img id='Light_Switch' onclick = "Light = ! Light;changeLightImage()" src = 'pic/Switch_OFF.jpg'\></center>
+</br></br>
+
+<center><img id='Fan' style = 'width:120px' src = 'pic/Fan_OFF.jpg'\>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+<img id='Fan_Switch' onclick = "Fan = ! Fan;changeFanImage()" src = 'pic/Switch_OFF.jpg'\></center>
+</br></br>
+<center><button onclick="voice_control()" class="button voice">Voice</button></center>
+</br></br>
+<center><h1><font size='6px' color='#80e5ff'>Designed by Shuvabrata Dey</font></h1></center>
+</br></br></br></br>
+</body>
+</html>
